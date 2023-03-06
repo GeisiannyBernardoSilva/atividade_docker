@@ -1,0 +1,34 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    restart: always
+    ports:  
+      - 80:80
+    environment:
+       WORDPRESS_DB_HOST: db
+       WORDPRESS_DB_USER: ec2-user
+       WORDPRESS_DB_PASSWORD: wordpress
+       WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - /efs/geisianny/wordpress:/var/www/html
+    
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: wordpress
+    volumes:
+      - /home/ec2-user/mysql:/var/lib/mysql
+
+volumes:
+  wordpress:
+  db: 
+     
